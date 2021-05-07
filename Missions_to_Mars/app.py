@@ -11,11 +11,12 @@ mongo = PyMongo(app)
 # Or set inline
 # mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_app")
 
-
+#Create a root route / 
+#that will query your Mongo database and pass the mars data into an HTML template to display the data
 @app.route("/")
 def index():
-    listings = mongo.db.listings.find_one()
-    return render_template("index.html", listings=listings)
+    mars = mongo.db.mars.find_one()
+    return render_template("index.html", mars_info=mars)
 
 
 #Create a route called /scrape that will import your scrape_mars.py script and call your scrape function
