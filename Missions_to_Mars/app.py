@@ -18,11 +18,12 @@ def index():
     return render_template("index.html", listings=listings)
 
 
+#Create a route called /scrape that will import your scrape_mars.py script and call your scrape function
 @app.route("/scrape")
-def scraper():
-    listings = mongo.db.listings
-    listings_data = scrape_craigslist.scrape()
-    listings.update({}, listings_data, upsert=True)
+def scrape():
+    mars = mongo.db.mars
+    mars_data = scrape_mars.scrape()
+    mars.update({}, mars_data, upsert=True)
     return redirect("/", code=302)
 
 
