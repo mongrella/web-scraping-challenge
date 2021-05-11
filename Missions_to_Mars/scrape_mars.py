@@ -1,6 +1,7 @@
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 from flask import Flask, render_template, redirect
+from flask_pymongo import PyMongo
 import pandas as pd
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -44,7 +45,6 @@ def scrape():
     #Use Pandas to read Mars table
     mars_df=pd.read_html('https://galaxyfacts-mars.com/')[0]
 
-    
     mars_df.columns=["Description","Mars","Earth"]
 
 
@@ -72,21 +72,29 @@ def scrape():
     #Iterate through list and append dictionary with URL string and hemisphere title to a list
 
     for hemisphere in hemispheres:
+        #Find title and image URL
         title=hemisphere.find("h3").text
         trailing_link=hemisphere.find("a")["href"]
         image_link = mh_url+trailing_link
         browser.visit(image_link)
         html=browser.html
         soup = BeautifulSoup(html, 'html.parser')
-    #Image specific page
+        #Image specific page
         downloads=soup.find("div", class_="downloads")
         image_url=downloads.find("a")["href"]
         hemisphere_img_urls.append({"title": title, "img_url": image_url})
 
-print(hemisphere_img_urls)
+    #Store data in a ditionary
+    mars = {
+        "news_title":news_title,
+        "news":paragraph_content,
+        "featured_image_url":featured_image_url,
+        "mars_table":mars_df,
+        "hemisphere images":hemisphere_img_urls
+    }
 
     # Close the browser after scraping
     browser.quit()
 
     # Return results
-    return mars_data
+    return mars
