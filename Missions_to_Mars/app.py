@@ -16,7 +16,7 @@ mongo = PyMongo(app)
 @app.route("/")
 def index():
     mars = mongo.db.mars.find_one()
-    return render_template("index.html", mars_info=mars)
+    return render_template("index.html", mars=mars)
 
 
 #Create a route called /scrape that will import your scrape_mars.py script and call your scrape function

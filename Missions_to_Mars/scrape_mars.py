@@ -90,7 +90,7 @@ def scrape():
         "news":paragraph_content,
         "featured_image_url":featured_image_url,
         "mars_table":mars_df,
-        "hemisphere images":hemisphere_img_urls
+        "hemisphere_images":hemisphere_img_urls
     }
 
     # Close the browser after scraping
